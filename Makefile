@@ -1,13 +1,20 @@
-# Makefile - makefile to build the base system
+CXX=g++
+CXXOPTIMIZE= -O2
+CXXFLAGS= -g -Wall -pthread -std=c++11 $(CXXOPTIMIZE)
+USERID=405346495
+CLASSES=
 
-# Make environment
-CC=g++
-LIBS=-lpthread
+all: server client
 
+server: $(CLASSES)
+	$(CXX) -o $@ $^ $(CXXFLAGS) $@.cpp CRC.cpp
 
-server :
-	$(CC) CRC.cpp Server.cpp -o server $(LIBS)
-client:
-	$(CC) CRC.cpp Client.cpp -o client
+client: $(CLASSES)
+	$(CXX) -o $@ $^ $(CXXFLAGS) $@.cpp CRC.cpp
 
-	
+clean:
+	rm -rf *.o *~ *.gch *.swp *.dSYM server client *.tar.gz
+
+dist: tarball
+tarball: clean
+	tar -cvzf /tmp/$(USERID).tar.gz --exclude=./.vagrant . && mv /tmp/$(USERID).tar.gz .
