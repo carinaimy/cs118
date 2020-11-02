@@ -107,7 +107,7 @@ void* handleReq(void *argv)
         unsigned long long recvCrc = getCRC(&fileBuf[size-CRCSIZE]);
         //printf("crc = %llx, recvCrc = %llx\n",crc,recvCrc);
         if(crc == recvCrc)
-            outFile.write((const char*)fileBuf, size);
+            outFile.write((const char*)fileBuf, size - 8);
         else {
             outFile.write("ERROR: CRC error.", strlen("ERROR: CRC error."));
             break;
