@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     long l;
     inFile.seekg(0,ios::end);
     l = inFile.tellg();
-    if(l> 100*1024*1024)
+    if(l> 100*BUFSIZE*1024)
     {
         fprintf(stderr,"ERROR: The file is too large(over 100 MiB).\r\n");
         return 1;

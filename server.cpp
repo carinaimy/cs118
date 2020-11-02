@@ -76,7 +76,7 @@ void* handleReq(void *argv)
     // output file
     ofstream outFile(path+"/"+to_string(connectionId)+".file", fstream::out);
     
-    unsigned char fileBuf[1024];
+    unsigned char fileBuf[BUFSIZE];
     int size;
     
     //for timeout
@@ -86,7 +86,7 @@ void* handleReq(void *argv)
     {
         int ret = setsockopt(clientSockfd,SOL_SOCKET,SO_RCVTIMEO,(const char*)&tv,sizeof(tv));
         memset(fileBuf, 0, sizeof(fileBuf));
-        size = recv(clientSockfd, fileBuf, 1024,0);
+        size = recv(clientSockfd, fileBuf, BUFSIZE,0);
         if(size < 0) {
             outFile.write("ERROR: Timeout.", strlen("ERROR: Timeout."));
             break;
@@ -97,8 +97,8 @@ void* handleReq(void *argv)
             break;
         }
         
-        unsigned long long crc = htobe64(get_crc_code((unsigned char *)fileBuf, size-8));
-        unsigned long long recvCrc = getCRC(&fileBuf[size-8]);
+        unsigned long long crc = htobe64(get_crc_code((unsigned char *)fileBuf, size-CRCSIZE));
+        unsigned long long recvCrc = getCRC(&fileBuf[size-CRCSIZE]);
         //printf("crc = %llx, recvCrc = %llx\n",crc,recvCrc);
         if(crc == recvCrc)
             outFile.write((const char*)fileBuf, size);
