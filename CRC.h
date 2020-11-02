@@ -6,4 +6,5 @@
 void create_crc_table();
 unsigned long long get_crc_code(unsigned char *stream, int length);
 
+
 #endif

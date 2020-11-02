@@ -74,8 +74,10 @@ void* handleReq(void *argv)
     int connectionId = temp->id;
     
     // output file
-    ofstream outFile(path+"/"+to_string(connectionId)+".file", fstream::out);
-    
+    ofstream outFile("."+path+"/"+to_string(connectionId)+".file", fstream::out);
+    if(!outFile){
+        cout<<"create file error"<<endl;
+    }
     unsigned char fileBuf[BUFSIZE];
     int size;
     
@@ -84,16 +86,20 @@ void* handleReq(void *argv)
     
     while(1)
     {
-        int ret = setsockopt(clientSockfd,SOL_SOCKET,SO_RCVTIMEO,(const char*)&tv,sizeof(tv));
+        setsockopt(clientSockfd,SOL_SOCKET,SO_RCVTIMEO,(const char*)&tv,sizeof(tv));
         memset(fileBuf, 0, sizeof(fileBuf));
         size = recv(clientSockfd, fileBuf, BUFSIZE,0);
         if(size < 0) {
-            outFile.write("ERROR: Timeout.", strlen("ERROR: Timeout."));
-            break;
+            cout<<"Connection close."<<endl;
+            outFile.close();
+            close(clientSockfd);
+            ofstream errFile("."+path+"/"+to_string(connectionId)+".file", fstream::out);
+            errFile.write("ERROR: Timeout.", strlen("ERROR: Timeout."));
+            return NULL;
         }else if(size > 0){
             //cout<<"Recv:"<<size<<endl;
         }else{
-            //cout<<"Recv end."<<endl;
+            cout<<"Recv end."<<endl;
             break;
         }
         
@@ -156,7 +162,7 @@ int main(int argc, char* argv[])
     memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
     
     if (bind(sockfd, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
-        perror("bind");
+        perror("bind error");
         return 2;
     }
     

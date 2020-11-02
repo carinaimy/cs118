@@ -8,7 +8,6 @@
 #define INITCRC (0)
 const unsigned long long m_polynomial = 0x42F0E1EBA9EA3693;
 unsigned long long m_CRC_table[256];
-
 void create_crc_table() {
 	int i, j;
 	unsigned long long part;
