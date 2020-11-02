@@ -16,4 +16,4 @@ clean:
 
 dist: tarball
 tarball: clean
-	tar -cvzf /tmp/$(405346495).tar.gz --exclude=./.vagrant . && mv /tmp/$(405346495).tar.gz
+	tar -cvzf /tmp/$(USERID).tar.gz --exclude=./.vagrant . && mv /tmp/$(USERID).tar.gz .
