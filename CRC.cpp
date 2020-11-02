@@ -1,24 +1,16 @@
-#include <iostream>
-#include "CRC.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 #include <sys/types.h>
+#include "CRC.h"
 
-const uint64_t CRC::m_polynomial = 0x42F0E1EBA9EA3693ull;
 #define INITCRC (0)
+const unsigned long long m_polynomial = 0x42F0E1EBA9EA3693;
+unsigned long long m_CRC_table[256];
 
-CRC::CRC()
-{}
-
-CRC::~CRC()
-{}
-
-void CRC::create_crc_table()
-{
-    int i, j;
+void create_crc_table() {
+	int i, j;
 	unsigned long long part;
 	for (i = 0; i < 256; i++)
 	{
@@ -34,11 +26,12 @@ void CRC::create_crc_table()
 	}
 }
 
-uint64_t CRC::get_crc_code(uint8_t *stream, int length)
+unsigned long long get_crc_code(unsigned char *stream, int length)
 {
+    int i;
     unsigned long long crc = INITCRC;
     
-	int i = 0;
+	i = 0;
 	while (i < length)
 	{
 		crc = m_CRC_table[(crc ^ *stream++) & 0xff] ^ (crc >> 8);
@@ -47,6 +40,3 @@ uint64_t CRC::get_crc_code(uint8_t *stream, int length)
  
     return crc;
 }
-
-
-

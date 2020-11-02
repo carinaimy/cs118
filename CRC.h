@@ -1,15 +1,9 @@
 #include <stdint.h>
 
-class CRC
-{
-public:
-    CRC();
-    ~CRC();
-    uint64_t get_crc_code(uint8_t *stream, int length);
+#ifndef CRC_H
+#define CRC_H
 
-private:
-    void create_crc_table();
+void create_crc_table();
+unsigned long long get_crc_code(unsigned char *stream, int length);
 
-    uint64_t m_CRC_table[256];
-    static const uint64_t m_polynomial;
-};
+#endif
