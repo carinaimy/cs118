@@ -1,5 +1,5 @@
 # cs118_fall2020_project1
-# Yuanyuan Xiong  UID:405346495
+# Yuanyuan Xiong  UID:123456789
 
 1. Hign-level design of server:
     When the server runs, it first checks the correctness of the parameters, 
