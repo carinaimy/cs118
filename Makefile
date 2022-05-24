@@ -1,7 +1,7 @@
 CXX=g++
 CXXOPTIMIZE= -O2
 CXXFLAGS= -g -Wall -pthread -lpthread -std=c++11 $(CXXOPTIMIZE)
-USERID=405346495
+USERID=123456789
 
 all: server client
 
